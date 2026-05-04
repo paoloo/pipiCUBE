@@ -41,9 +41,10 @@ jobs:
         with:
           python-version: '3.11'
           cache: pip
+          cache-dependency-path: requirements.txt
 
       - name: Install F Prime tools
-        run: pip install fprime-tools
+        run: pip install -r requirements.txt
 
       # ── 4. Pico SDK (cached by version) ──────────────────────────────────────
       - name: Cache pico-sdk
