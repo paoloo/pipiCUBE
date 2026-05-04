@@ -1,4 +1,4 @@
-register_fprime_module(
+register_fprime_module(LoRaDriver
   SOURCES
     "${CMAKE_CURRENT_LIST_DIR}/LoRaDriver.cpp"
   AUTOCODER_INPUTS

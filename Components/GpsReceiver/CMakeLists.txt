@@ -1,4 +1,4 @@
-register_fprime_module(
+register_fprime_module(GpsReceiver
   SOURCES
     "${CMAKE_CURRENT_LIST_DIR}/GpsReceiver.cpp"
   AUTOCODER_INPUTS

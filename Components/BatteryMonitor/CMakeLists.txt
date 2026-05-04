@@ -1,4 +1,4 @@
-register_fprime_module(
+register_fprime_module(BatteryMonitor
   SOURCES
     "${CMAKE_CURRENT_LIST_DIR}/BatteryMonitor.cpp"
   AUTOCODER_INPUTS

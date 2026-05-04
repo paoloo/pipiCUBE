@@ -42,7 +42,10 @@ include("${CMAKE_CURRENT_LIST_DIR}/cmake/rp2040.cmake")
 include_directories("${CMAKE_CURRENT_LIST_DIR}/config")
 
 # ── Subdirectories ────────────────────────────────────────────────────────────
+# hal and Os are plain CMake libraries — not F' modules, use add_subdirectory
 add_subdirectory(hal)
 add_subdirectory(Os)
-add_subdirectory(Components)
-add_subdirectory(Top)
+# Components and Top are F' modules — must use add_fprime_subdirectory so that
+# F' sets FPRIME_CURRENT_MODULE before entering each CMakeLists.txt
+add_fprime_subdirectory(Components)
+add_fprime_subdirectory(Top)

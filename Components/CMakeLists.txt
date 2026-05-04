@@ -1,3 +1,3 @@
-add_subdirectory(BatteryMonitor)
-add_subdirectory(GpsReceiver)
-add_subdirectory(LoRaDriver)
+add_fprime_subdirectory(BatteryMonitor)
+add_fprime_subdirectory(GpsReceiver)
+add_fprime_subdirectory(LoRaDriver)
