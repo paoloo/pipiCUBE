@@ -65,6 +65,9 @@ jobs:
           cd "$FPRIME_PATH"
           git submodule update --init --depth 1
 
+      - name: Install fprime framework requirements (fpp-tools)
+        run: pip install -r "$FPRIME_PATH/requirements.txt"
+
       # ── 5. Pico SDK (cached by version) ──────────────────────────────────────
       - name: Cache pico-sdk
         id: cache-pico-sdk
