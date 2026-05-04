@@ -24,6 +24,15 @@ if(NOT EXISTS "${FPRIME_FRAMEWORK_PATH}/cmake/FPrime.cmake")
     "F Prime not found at ${FPRIME_FRAMEWORK_PATH}. "
     "Run: git submodule update --init --recursive")
 endif()
+
+# Tell F' where to look for custom platform files (checked before the framework
+# directory, so cmake/platform/RP2040.cmake in this repo is found first).
+set(FPRIME_PROJECT_ROOT "${CMAKE_CURRENT_LIST_DIR}")
+
+# Select the RP2040 bare-metal platform file (cmake/platform/RP2040.cmake).
+# Must be set before including FPrime.cmake — platform detection runs at include time.
+set(FPRIME_PLATFORM "RP2040")
+
 include("${FPRIME_FRAMEWORK_PATH}/cmake/FPrime.cmake")
 
 # ── Project-wide compile options (space-grade) ───────────────────────────────
