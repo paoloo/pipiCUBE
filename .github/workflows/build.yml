@@ -13,15 +13,16 @@ jobs:
     runs-on: ubuntu-24.04
 
     env:
-      PICO_SDK_VERSION: "1.5.1"
-      PICO_SDK_PATH:    "${{ github.workspace }}/pico-sdk"
+      PICO_SDK_VERSION:   "1.5.1"
+      PICO_SDK_PATH:      "${{ github.workspace }}/pico-sdk"
+      FPRIME_VERSION:     "v4.2.2"
+      FPRIME_PATH:        "${{ github.workspace }}/fprime"
 
     steps:
       # ── 1. Source ────────────────────────────────────────────────────────────
-      - name: Checkout repository (with fprime submodule)
+      - name: Checkout repository
         uses: actions/checkout@v4
         with:
-          submodules: recursive
           fetch-depth: 0        # full history so tags resolve for release notes
 
       # ── 2. Toolchain ─────────────────────────────────────────────────────────
@@ -46,7 +47,25 @@ jobs:
       - name: Install F Prime tools
         run: pip install -r requirements.txt
 
-      # ── 4. Pico SDK (cached by version) ──────────────────────────────────────
+      # ── 4. F Prime framework (cached by version tag) ─────────────────────────
+      - name: Cache fprime
+        id: cache-fprime
+        uses: actions/cache@v4
+        with:
+          path: ${{ env.FPRIME_PATH }}
+          key: fprime-${{ env.FPRIME_VERSION }}
+
+      - name: Clone fprime ${{ env.FPRIME_VERSION }}
+        if: steps.cache-fprime.outputs.cache-hit != 'true'
+        run: |
+          git clone --depth 1 \
+            --branch "$FPRIME_VERSION" \
+            https://github.com/nasa/fprime.git \
+            "$FPRIME_PATH"
+          cd "$FPRIME_PATH"
+          git submodule update --init --depth 1
+
+      # ── 5. Pico SDK (cached by version) ──────────────────────────────────────
       - name: Cache pico-sdk
         id: cache-pico-sdk
         uses: actions/cache@v4
@@ -64,25 +83,26 @@ jobs:
           cd "$PICO_SDK_PATH"
           git submodule update --init --depth 1
 
-      # ── 5. Configure ─────────────────────────────────────────────────────────
+      # ── 6. Configure ─────────────────────────────────────────────────────────
       - name: CMake configure
         run: |
           cmake -S . -B build \
             -DCMAKE_BUILD_TYPE=MinSizeRel \
-            -DPICO_SDK_PATH="$PICO_SDK_PATH"
+            -DPICO_SDK_PATH="$PICO_SDK_PATH" \
+            -DFPRIME_FRAMEWORK_PATH="$FPRIME_PATH"
 
-      # ── 6. Build ──────────────────────────────────────────────────────────────
+      # ── 7. Build ──────────────────────────────────────────────────────────────
       - name: Build firmware
         run: cmake --build build --parallel $(nproc)
 
-      # ── 7. Verify outputs ────────────────────────────────────────────────────
+      # ── 8. Verify outputs ────────────────────────────────────────────────────
       - name: Verify build artefacts
         run: |
           ls -lh build/Top/pipicube.uf2
           ls -lh build/Top/pipicube.elf
           arm-none-eabi-size build/Top/pipicube.elf
 
-      # ── 8. Upload UF2 (every build) ──────────────────────────────────────────
+      # ── 9. Upload UF2 (every build) ──────────────────────────────────────────
       - name: Upload UF2 artefact
         uses: actions/upload-artifact@v4
         with:
@@ -93,7 +113,7 @@ jobs:
           if-no-files-found: error
           retention-days: 90
 
-      # ── 9. GitHub Release (tag builds only) ──────────────────────────────────
+      # ── 10. GitHub Release (tag builds only) ─────────────────────────────────
       - name: Create GitHub Release
         if: startsWith(github.ref, 'refs/tags/')
         uses: softprops/action-gh-release@v2
@@ -120,6 +140,7 @@ jobs:
             | Commit | `${{ github.sha }}` |
             | Toolchain | arm-none-eabi-gcc |
             | pico-sdk | ${{ env.PICO_SDK_VERSION }} |
+            | fprime | ${{ env.FPRIME_VERSION }} |
           files: |
             build/Top/pipicube.uf2
             build/Top/pipicube.elf
