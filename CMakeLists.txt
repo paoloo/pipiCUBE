@@ -30,10 +30,13 @@ endif()
 set(FPRIME_PROJECT_ROOT "${CMAKE_CURRENT_LIST_DIR}")
 
 # Select the RP2040 bare-metal platform file (cmake/platform/RP2040.cmake).
-# Must be set before including FPrime.cmake — platform detection runs at include time.
+# Must be set before find_package — platform detection runs at include time.
 set(FPRIME_PLATFORM "RP2040")
 
-include("${FPRIME_FRAMEWORK_PATH}/cmake/FPrime.cmake")
+# Load F' framework modules (Fw_*, Svc_*, etc.) alongside project modules.
+set(FPRIME_INCLUDE_FRAMEWORK_CODE ON)
+
+find_package(FPrime REQUIRED PATHS "${FPRIME_FRAMEWORK_PATH}")
 
 # ── Project-wide compile options (space-grade) ───────────────────────────────
 include("${CMAKE_CURRENT_LIST_DIR}/cmake/rp2040.cmake")
@@ -49,3 +52,17 @@ add_subdirectory(Os)
 # F' sets FPRIME_CURRENT_MODULE before entering each CMakeLists.txt
 add_fprime_subdirectory(Components)
 add_fprime_subdirectory(Top)
+
+register_fprime_deployment(pipicube
+  SOURCES "${CMAKE_CURRENT_LIST_DIR}/Top/main.cpp"
+  DEPENDS
+    pipicube_Top
+    pipicube_hal
+    pipicube_os
+    pico_stdlib
+    hardware_timer
+)
+
+pico_add_extra_outputs(pipicube)
+pico_enable_stdio_usb(pipicube 1)
+pico_enable_stdio_uart(pipicube 0)
