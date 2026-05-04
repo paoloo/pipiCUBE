@@ -1,0 +1,9 @@
+build-artifacts/
+*.elf
+*.uf2
+*.bin
+*.map
+*.d
+*.o
+*.a
+.DS_Store
