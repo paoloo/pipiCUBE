@@ -15,8 +15,8 @@ BatteryMonitor::BatteryMonitor(const char *compName)
 
 BatteryMonitor::~BatteryMonitor() {}
 
-void BatteryMonitor::init(FwEnumStoreType instance) {
-    BatteryMonitorComponentBase::init(instance);
+void BatteryMonitor::init(FwSizeType queueDepth, FwEnumStoreType instance) {
+    BatteryMonitorComponentBase::init(queueDepth, instance);
 }
 
 // ── schedIn_handler ────────────────────────────────────────────────────────────

@@ -43,8 +43,8 @@ LoRaDriver::LoRaDriver(const char *compName)
 
 LoRaDriver::~LoRaDriver() {}
 
-void LoRaDriver::init(FwEnumStoreType instance) {
-    LoRaDriverComponentBase::init(instance);
+void LoRaDriver::init(FwSizeType queueDepth, FwEnumStoreType instance) {
+    LoRaDriverComponentBase::init(queueDepth, instance);
 }
 
 void LoRaDriver::preamble(void) {

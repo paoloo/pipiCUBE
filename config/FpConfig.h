@@ -19,6 +19,13 @@ extern "C" {
 #define FW_OBJECT_REGISTRATION  (0)
 #define FW_QUEUE_REGISTRATION   (0)
 
+// Required by autocoded topology Ac.cpp — expands to "" when names are off
+#if FW_OBJECT_NAMES == 1
+#define FW_OPTIONAL_NAME(name) name
+#else
+#define FW_OPTIONAL_NAME(name) ""
+#endif
+
 // Disable port call tracing
 #define FW_PORT_TRACING         (0)
 

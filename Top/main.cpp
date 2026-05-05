@@ -10,8 +10,6 @@
 #include "pico/stdlib.h"
 #include "hardware/timer.h"
 
-// ── Rate group hardware timer ─────────────────────────────────────────────────
-// Fires at 4 Hz (250 ms period). Drives Svc.RateGroupDriver.
 static volatile bool s_cycle_flag = false;
 
 static bool rate_timer_callback(struct repeating_timer *rt) {
@@ -20,7 +18,6 @@ static bool rate_timer_callback(struct repeating_timer *rt) {
     return true;
 }
 
-// ── Hardware initialisation ───────────────────────────────────────────────────
 static void hw_init(void) {
     stdio_init_all();
 
@@ -37,7 +34,8 @@ static void hw_init(void) {
 int main(void) {
     hw_init();
 
-    PipiCube::setupTopology();
+    PipiCube::TopologyState state;
+    PipiCube::setupTopology(state);
 
     struct repeating_timer rate_timer;
     add_repeating_timer_ms(250, rate_timer_callback, nullptr, &rate_timer);
@@ -55,6 +53,6 @@ int main(void) {
         PipiCube::rateGroupDriver.CycleIn_handler(0, cycleStart);
     }
 
-    PipiCube::teardownTopology();
+    PipiCube::teardownTopology(state);
     return 0;
 }

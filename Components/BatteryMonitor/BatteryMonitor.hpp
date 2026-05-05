@@ -25,7 +25,7 @@ class BatteryMonitor final : public BatteryMonitorComponentBase {
     explicit BatteryMonitor(const char *compName);
     ~BatteryMonitor() override;
 
-    void init(FwEnumStoreType instance = 0);
+    void init(FwSizeType queueDepth, FwEnumStoreType instance = 0);
 
   private:
     // ── F' autocoded virtual methods ─────────────────────────────────────────

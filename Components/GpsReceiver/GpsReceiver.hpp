@@ -13,7 +13,7 @@ class GpsReceiver final : public GpsReceiverComponentBase {
     explicit GpsReceiver(const char *compName);
     ~GpsReceiver() override;
 
-    void init(FwEnumStoreType instance = 0);
+    void init(FwSizeType queueDepth, FwEnumStoreType instance = 0);
 
   private:
     // ── F' autocoded virtual methods ─────────────────────────────────────────

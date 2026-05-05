@@ -20,8 +20,8 @@ GpsReceiver::GpsReceiver(const char *compName)
 
 GpsReceiver::~GpsReceiver() {}
 
-void GpsReceiver::init(FwEnumStoreType instance) {
-    GpsReceiverComponentBase::init(instance);
+void GpsReceiver::init(FwSizeType queueDepth, FwEnumStoreType instance) {
+    GpsReceiverComponentBase::init(queueDepth, instance);
 }
 
 // ── schedIn_handler ────────────────────────────────────────────────────────────

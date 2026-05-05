@@ -23,7 +23,7 @@ class LoRaDriver final : public LoRaDriverComponentBase {
     explicit LoRaDriver(const char *compName);
     ~LoRaDriver() override;
 
-    void init(FwEnumStoreType instance = 0);
+    void init(FwSizeType queueDepth, FwEnumStoreType instance = 0);
     void preamble(void) override;   // runs init sequence after topology is set up
 
   private:
