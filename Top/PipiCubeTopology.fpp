@@ -38,6 +38,18 @@ module PipiCube {
 
   topology PipiCube {
 
+    # ── Topology members ──────────────────────────────────────────────────────
+    instance rateGroupDriver
+    instance rateGroup1Hz
+    instance rateGroup4Hz
+    instance cmdDisp
+    instance tlmChan
+    instance eventManager
+    instance systemTime
+    instance batteryMonitor
+    instance gpsReceiver
+    instance loraDriver
+
     # ── Pattern specifiers (auto-wire standard F' services) ───────────────────
     command connections instance cmdDisp
     event connections instance eventManager

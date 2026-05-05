@@ -19,9 +19,6 @@ add_compile_options(
 add_compile_options(-fstack-protector-strong)
 
 add_compile_definitions(
-  PICO_BOARD=pico
-  PICO_RP2040=1
   F_PRIME_BAREMETAL=1
-  # Disable heap after init: all allocations must be static
   PICO_HEAP_SIZE=0
 )
