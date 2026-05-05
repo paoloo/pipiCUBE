@@ -63,6 +63,8 @@ register_fprime_deployment(pipicube
     hardware_timer
 )
 
+target_link_options(pipicube PRIVATE -Wl,-Map=pipicube.map)
+
 pico_add_extra_outputs(pipicube)
 pico_enable_stdio_usb(pipicube 1)
 pico_enable_stdio_uart(pipicube 0)
