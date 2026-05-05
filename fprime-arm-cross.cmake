@@ -19,7 +19,7 @@ set(CPU_FLAGS "-mcpu=cortex-m0plus -mthumb -mfloat-abi=soft")
 set(CMAKE_C_FLAGS_INIT    "${CPU_FLAGS} -ffunction-sections -fdata-sections")
 set(CMAKE_CXX_FLAGS_INIT  "${CPU_FLAGS} -ffunction-sections -fdata-sections -fno-exceptions -fno-rtti")
 set(CMAKE_EXE_LINKER_FLAGS_INIT
-    "${CPU_FLAGS} --specs=nosys.specs -Wl,--gc-sections -Wl,-Map=pipicube.map")
+    "${CPU_FLAGS} -Wl,--gc-sections -Wl,-Map=pipicube.map")
 
 # Sysroot search mode
 set(CMAKE_FIND_ROOT_PATH_MODE_PROGRAM NEVER)
