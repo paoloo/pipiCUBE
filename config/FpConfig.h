@@ -28,8 +28,8 @@ extern "C" {
 // Use file-CRC + line-number in asserts (smaller than full filename strings)
 #define FW_ASSERT_LEVEL         FW_FILEID_ASSERT
 
-// Disable printf-family functions in string formatting to save flash
-#define FW_USE_PRINTF_FAMILY_FUNCTIONS_IN_STRING_FORMATTING (0)
+// Required: we use Fw_StringFormat_snprintf, so printf family must be enabled
+#define FW_USE_PRINTF_FAMILY_FUNCTIONS_IN_STRING_FORMATTING (1)
 
 // Disable text logging output port to save code/flash
 // Requires FPRIME_ENABLE_TEXT_LOGGERS=OFF in cmake

@@ -4,7 +4,6 @@
 add_compile_options(
   -Wall
   -Wextra
-  -Wpedantic
   -Wshadow
   -Wcast-align
   -Wvla                      # forbid variable-length arrays (SEI CERT ARR32-C)
