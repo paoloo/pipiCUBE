@@ -4,6 +4,10 @@
 set(CMAKE_SYSTEM_NAME Generic)
 set(CMAKE_SYSTEM_PROCESSOR arm)
 
+# Compile to static library during cmake compiler tests — avoids linking a
+# bare-metal executable which has no OS system-call stubs at configure time.
+set(CMAKE_TRY_COMPILE_TARGET_TYPE STATIC_LIBRARY)
+
 set(TOOLCHAIN_PREFIX arm-none-eabi)
 
 find_program(CMAKE_C_COMPILER    NAMES ${TOOLCHAIN_PREFIX}-gcc    REQUIRED)
