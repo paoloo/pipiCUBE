@@ -19,7 +19,7 @@ module PipiCube {
     sync input port schedIn: Svc.Sched
 
     # ── Data input: other components push ASCII payload strings (≤ 80 bytes) ─
-    async input port dataIn: Fw.Buffer
+    async input port dataIn: Fw.BufferSend
 
     # ── Telemetry channels ────────────────────────────────────────────────────
 

@@ -23,16 +23,16 @@ class LoRaDriver final : public LoRaDriverComponentBase {
     explicit LoRaDriver(const char *compName);
     ~LoRaDriver() override;
 
-    void init(const NATIVE_INT_TYPE instance = 0);
+    void init(FwEnumStoreType instance = 0);
     void preamble(void) override;   // runs init sequence after topology is set up
 
   private:
     // ── F' autocoded virtual methods ─────────────────────────────────────────
 
-    void schedIn_handler(NATIVE_INT_TYPE portNum,
-                         NATIVE_UINT_TYPE context) override;
+    void schedIn_handler(FwIndexType portNum,
+                         U32 context) override;
 
-    void dataIn_handler(NATIVE_INT_TYPE portNum,
+    void dataIn_handler(FwIndexType portNum,
                         Fw::Buffer &fwBuffer) override;
 
     void LORA_SEND_AT_cmdHandler(FwOpcodeType opCode,

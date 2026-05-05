@@ -20,13 +20,13 @@ GpsReceiver::GpsReceiver(const char *compName)
 
 GpsReceiver::~GpsReceiver() {}
 
-void GpsReceiver::init(const NATIVE_INT_TYPE instance) {
+void GpsReceiver::init(FwEnumStoreType instance) {
     GpsReceiverComponentBase::init(instance);
 }
 
 // ── schedIn_handler ────────────────────────────────────────────────────────────
-void GpsReceiver::schedIn_handler(const NATIVE_INT_TYPE portNum,
-                                   const NATIVE_UINT_TYPE context) {
+void GpsReceiver::schedIn_handler(FwIndexType portNum,
+                                   U32 context) {
     (void)portNum;
     (void)context;
 

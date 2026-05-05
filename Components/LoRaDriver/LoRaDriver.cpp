@@ -43,7 +43,7 @@ LoRaDriver::LoRaDriver(const char *compName)
 
 LoRaDriver::~LoRaDriver() {}
 
-void LoRaDriver::init(const NATIVE_INT_TYPE instance) {
+void LoRaDriver::init(FwEnumStoreType instance) {
     LoRaDriverComponentBase::init(instance);
 }
 
@@ -160,8 +160,8 @@ uint32_t LoRaDriver::readATLine(uint32_t timeout_us) {
 }
 
 // ── schedIn_handler ────────────────────────────────────────────────────────────
-void LoRaDriver::schedIn_handler(const NATIVE_INT_TYPE portNum,
-                                  const NATIVE_UINT_TYPE context) {
+void LoRaDriver::schedIn_handler(FwIndexType portNum,
+                                  U32 context) {
     (void)portNum;
     (void)context;
     if (m_state != LoRaState::READY) { return; }
@@ -269,7 +269,7 @@ bool LoRaDriver::parseRcv(const char *line, I16 &rssi, I16 &snr) {
 }
 
 // ── dataIn_handler ────────────────────────────────────────────────────────────
-void LoRaDriver::dataIn_handler(const NATIVE_INT_TYPE portNum,
+void LoRaDriver::dataIn_handler(FwIndexType portNum,
                                  Fw::Buffer &fwBuffer) {
     (void)portNum;
     if (m_state != LoRaState::READY) { return; }

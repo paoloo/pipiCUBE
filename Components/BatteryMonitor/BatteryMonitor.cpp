@@ -15,13 +15,13 @@ BatteryMonitor::BatteryMonitor(const char *compName)
 
 BatteryMonitor::~BatteryMonitor() {}
 
-void BatteryMonitor::init(const NATIVE_INT_TYPE instance) {
+void BatteryMonitor::init(FwEnumStoreType instance) {
     BatteryMonitorComponentBase::init(instance);
 }
 
 // ── schedIn_handler ────────────────────────────────────────────────────────────
-void BatteryMonitor::schedIn_handler(const NATIVE_INT_TYPE portNum,
-                                      const NATIVE_UINT_TYPE context) {
+void BatteryMonitor::schedIn_handler(FwIndexType portNum,
+                                      U32 context) {
     (void)portNum;
     (void)context;
     this->doPoll();

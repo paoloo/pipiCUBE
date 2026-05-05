@@ -25,13 +25,13 @@ class BatteryMonitor final : public BatteryMonitorComponentBase {
     explicit BatteryMonitor(const char *compName);
     ~BatteryMonitor() override;
 
-    void init(const NATIVE_INT_TYPE instance = 0);
+    void init(FwEnumStoreType instance = 0);
 
   private:
     // ── F' autocoded virtual methods ─────────────────────────────────────────
 
-    void schedIn_handler(NATIVE_INT_TYPE portNum,
-                         NATIVE_UINT_TYPE context) override;
+    void schedIn_handler(FwIndexType portNum,
+                         U32 context) override;
 
     void BATTERY_POLL_cmdHandler(FwOpcodeType opCode,
                                   U32          cmdSeq) override;
