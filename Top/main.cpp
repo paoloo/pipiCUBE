@@ -3,7 +3,7 @@
 // then drives the rate group driver at 4 Hz from a hardware repeating timer.
 
 #include "PipiCubeTopology.hpp"
-#include "PipiCubeTopologyAc.hpp"
+#include "Top/PipiCubeTopologyAc.hpp"
 #include <Os/RawTime.hpp>
 #include <hal/rp2040_hal.h>
 
@@ -52,7 +52,7 @@ int main(void) {
         hal_watchdog_kick();
 
         cycleStart.now();
-        rateGroupDriver.CycleIn_handler(0, cycleStart);
+        PipiCube::rateGroupDriver.CycleIn_handler(0, cycleStart);
     }
 
     PipiCube::teardownTopology();
