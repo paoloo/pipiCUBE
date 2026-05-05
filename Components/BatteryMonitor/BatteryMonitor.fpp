@@ -37,7 +37,7 @@ module PipiCube {
 
     @ I2C transaction to IP5306 failed
     event I2cReadError(
-      reg:     U8   @< register address attempted
+      regAddr:  U8   @< register address attempted
       errCode: I32  @< HAL error code
     ) severity warning low id 0x100 \
       format "IP5306 I2C read reg=0x{x} err={}"
