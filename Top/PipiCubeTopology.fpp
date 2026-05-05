@@ -1,8 +1,10 @@
 module PipiCube {
 
-  # ════════════════════════════════════════════════════════════════════════════
+  # ============================================================================
   # Component instances
-  # ════════════════════════════════════════════════════════════════════════════
+  # ============================================================================
+
+  instance baremetalTimer: PipiCube.BaremetalTimer base id 0x0005
 
   instance rateGroupDriver: Svc.RateGroupDriver base id 0x0010
 
@@ -32,13 +34,14 @@ module PipiCube {
   instance loraDriver: PipiCube.LoRaDriver base id 0x3000 \
     queue size 20 stack size 4096 priority 70
 
-  # ════════════════════════════════════════════════════════════════════════════
+  # ============================================================================
   # Topology
-  # ════════════════════════════════════════════════════════════════════════════
+  # ============================================================================
 
   topology PipiCube {
 
-    # ── Topology members ──────────────────────────────────────────────────────
+    # -- Topology members -------------------------------------------------------
+    instance baremetalTimer
     instance rateGroupDriver
     instance rateGroup1Hz
     instance rateGroup4Hz
@@ -50,19 +53,20 @@ module PipiCube {
     instance gpsReceiver
     instance loraDriver
 
-    # ── Pattern specifiers (auto-wire standard F' services) ───────────────────
+    # -- Pattern specifiers (auto-wire standard F' services) --------------------
     command connections instance cmdDisp
     event connections instance eventManager
     telemetry connections instance tlmChan
     time connections instance systemTime
 
-    # ── Rate group driver → rate groups ────────────────────────────────────────
+    # -- Rate group driver -> rate groups ---------------------------------------
     connections RateGroups {
+      baremetalTimer.CycleOut     -> rateGroupDriver.CycleIn
       rateGroupDriver.CycleOut[0] -> rateGroup4Hz.CycleIn
       rateGroupDriver.CycleOut[1] -> rateGroup1Hz.CycleIn
     }
 
-    # ── 1 Hz schedule (battery + GPS + tlm + cmd) ─────────────────────────────
+    # -- 1 Hz schedule (battery + GPS + tlm + cmd) ------------------------------
     connections Sched1Hz {
       rateGroup1Hz.RateGroupMemberOut[0] -> batteryMonitor.schedIn
       rateGroup1Hz.RateGroupMemberOut[1] -> gpsReceiver.schedIn
@@ -70,7 +74,7 @@ module PipiCube {
       rateGroup1Hz.RateGroupMemberOut[3] -> cmdDisp.run
     }
 
-    # ── 4 Hz schedule (LoRa AT+RCV polling) ───────────────────────────────────
+    # -- 4 Hz schedule (LoRa AT+RCV polling) ------------------------------------
     connections Sched4Hz {
       rateGroup4Hz.RateGroupMemberOut[0] -> loraDriver.schedIn
     }

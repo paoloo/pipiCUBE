@@ -1,3 +1,4 @@
+add_fprime_subdirectory(BaremetalTimer)
 add_fprime_subdirectory(BatteryMonitor)
 add_fprime_subdirectory(GpsReceiver)
 add_fprime_subdirectory(LoRaDriver)

@@ -5,6 +5,7 @@ register_fprime_module(pipicube_Top
     "${CMAKE_CURRENT_LIST_DIR}/PipiCubeTopology.fpp"
     "${CMAKE_CURRENT_LIST_DIR}/../config/AcConstants.fpp"
   DEPENDS
+    BaremetalTimer
     BatteryMonitor
     GpsReceiver
     LoRaDriver

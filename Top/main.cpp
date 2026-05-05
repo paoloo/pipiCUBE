@@ -50,7 +50,7 @@ int main(void) {
         hal_watchdog_kick();
 
         cycleStart.now();
-        PipiCube::rateGroupDriver.CycleIn_handler(0, cycleStart);
+        PipiCube::baremetalTimer.tick(cycleStart);
     }
 
     PipiCube::teardownTopology(state);

@@ -7,7 +7,7 @@ add_compile_options(
   -Wshadow
   -Wcast-align
   -Wvla                      # forbid variable-length arrays (SEI CERT ARR32-C)
-  -Wstack-usage=1024          # warn if a function exceeds 1 kB of stack
+  -Wstack-usage=2048          # warn if a function exceeds the smallest task stack
   -Wdouble-promotion
   -Wno-unused-parameter
   -fno-common
