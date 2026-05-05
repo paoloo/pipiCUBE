@@ -4,7 +4,6 @@
 add_compile_options(
   -Wall
   -Wextra
-  -Wshadow
   -Wcast-align
   -Wvla                      # forbid variable-length arrays (SEI CERT ARR32-C)
   -Wstack-usage=2048          # warn if a function exceeds the smallest task stack
