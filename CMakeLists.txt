@@ -61,17 +61,6 @@ register_fprime_deployment(pipicube
     pipicube_os
     pico_stdlib
     hardware_timer
-  CHOOSES_IMPLEMENTATIONS
-    Fw_StringFormat_snprintf
-    Fw_StringScan_sscanf
-    Os_Task_Stub
-    Os_Mutex_Stub
-    Os_Console_Stub
-    Os_File_Stub
-    Os_Cpu_Stub
-    Os_Memory_Stub
-    Os_RawTime_Stub
-    Os_Generic_PriorityQueue
 )
 
 pico_add_extra_outputs(pipicube)

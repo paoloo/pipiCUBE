@@ -1,55 +1,45 @@
 #ifndef PIPICUBE_FP_CONFIG_H
 #define PIPICUBE_FP_CONFIG_H
 
-// ── Integer base types ────────────────────────────────────────────────────────
-#include <stdint.h>
-#include <stddef.h>
-#include <stdbool.h>
+#ifdef __cplusplus
+extern "C" {
+#endif
 
-typedef uint8_t   U8;
-typedef uint16_t  U16;
-typedef uint32_t  U32;
-typedef uint64_t  U64;
-typedef int8_t    I8;
-typedef int16_t   I16;
-typedef int32_t   I32;
-typedef int64_t   I64;
-typedef float     F32;
-typedef double    F64;
-typedef int32_t   NATIVE_INT_TYPE;
-typedef uint32_t  NATIVE_UINT_TYPE;
-typedef uint32_t  FwOpcodeType;
-typedef uint32_t  FwChanIdType;
-typedef uint32_t  FwEventIdType;
-typedef uint32_t  FwPrmIdType;
+// BasicTypes.h provides U8/U16/U32/U64/I8/../F32/F64/NATIVE_INT_TYPE etc.
+// PlatformTypes.h provides PlatformPointerCastType for this platform.
+// Both are included by Fw/FPrimeBasicTypes.h before this file, but guard
+// against direct includes of FpConfig.h.
+#include <Fw/Types/BasicTypes.h>
+#include <Platform/PlatformTypes.h>
 
-// ── Object naming (disabled to save flash on embedded target) ─────────────────
-#define FW_OBJECT_NAMES 0
-#define FW_OBJECT_REGISTRATION 0
+// ── Flash-saving options for bare-metal embedded target ───────────────────────
 
-// ── Port/tracing (disabled on embedded) ──────────────────────────────────────
-#define FW_PORT_TRACING 0
-#define FW_PORT_SERIALIZATION 1
+// Disable per-object name storage and registration to save RAM/flash
+#define FW_OBJECT_NAMES         (0)
+#define FW_OBJECT_REGISTRATION  (0)
+#define FW_QUEUE_REGISTRATION   (0)
 
-// ── String buffer size (80 chars covers NMEA fields + LoRa AT responses) ─────
-#define FW_MAX_STRING_BUFFER_SIZE 80U
+// Disable port call tracing
+#define FW_PORT_TRACING         (0)
 
-// ── Serialisation type tag (disabled to save bytes) ──────────────────────────
-#define FW_SERIALIZATION_TYPE_ID 0
+// Keep port serialization (required for cross-component communication)
+#define FW_PORT_SERIALIZATION   (1)
 
-// ── Assert behaviour: spin on failure, letting watchdog recover ───────────────
-#define FW_ASSERT_LEVEL FW_FILELINE_ASSERT
+// Use file-CRC + line-number in asserts (smaller than full filename strings)
+#define FW_ASSERT_LEVEL         FW_FILEID_ASSERT
 
-// ── Command / telemetry buffer ────────────────────────────────────────────────
-#define FW_COM_BUFFER_MAX_SIZE 128U
+// Disable printf-family functions in string formatting to save flash
+#define FW_USE_PRINTF_FAMILY_FUNCTIONS_IN_STRING_FORMATTING (0)
 
-// ── Log/event buffers ─────────────────────────────────────────────────────────
-#define FW_LOG_TEXT_BUFFER_SIZE 80U
+// Disable text logging output port to save code/flash
+// Requires FPRIME_ENABLE_TEXT_LOGGERS=OFF in cmake
+#define FW_ENABLE_TEXT_LOGGING  (0)
 
-// ── Max number of OS tasks ────────────────────────────────────────────────────
-#define OS_MAX_NUM_TASKS 8U
+// Disable toString() on serializables (implied by text logging off)
+#define FW_SERIALIZABLE_TO_STRING (0)
 
-// ── Queue element size cap ────────────────────────────────────────────────────
-#define FW_QUEUE_SIZING FwQueueSizeType
+#ifdef __cplusplus
+}
+#endif
 
 #endif // PIPICUBE_FP_CONFIG_H
