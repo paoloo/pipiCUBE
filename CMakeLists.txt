@@ -63,6 +63,9 @@ register_fprime_deployment(pipicube
     hardware_timer
 )
 
+# Cortex-M0+ has no native atomic instructions; GCC needs libatomic for
+# __atomic_exchange_1, __atomic_fetch_add_2, etc. used by Os_Mutex_Stub/CmdDispatcher.
+target_link_libraries(pipicube PRIVATE atomic)
 target_link_options(pipicube PRIVATE -Wl,-Map=pipicube.map)
 
 pico_add_extra_outputs(pipicube)
