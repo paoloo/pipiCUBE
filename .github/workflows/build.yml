@@ -26,14 +26,14 @@ jobs:
           fetch-depth: 0        # full history so tags resolve for release notes
 
       # ── 2. Toolchain ─────────────────────────────────────────────────────────
-      # Use the official Arm GNU Toolchain 13.3.Rel1 tarball. Do NOT install
-      # libnewlib-arm-none-eabi from apt — it puts a second nosys.specs on the
-      # system path which causes a fatal "attempt to rename spec" double-
-      # processing error when pico-sdk passes -specs=nosys.specs at link time.
-      # The official tarball ships its own complete newlib sysroot.
-      - name: Install ARM cross-compiler (Arm GNU Toolchain 13.3.Rel1)
+      # pico-sdk 1.5.1 was designed for ARM GCC 12.x. ARM GCC 13.x introduced
+      # a nosys.specs change that causes a fatal "attempt to rename spec" error
+      # when pico-sdk passes -specs=nosys.specs to link boot_stage2. Use the
+      # official Arm GNU Toolchain 12.3.Rel1 tarball which does not have this
+      # bug and is the version pico-sdk 1.5.1 was tested against.
+      - name: Install ARM cross-compiler (Arm GNU Toolchain 12.3.Rel1)
         run: |
-          curl -fL "https://developer.arm.com/-/media/Files/downloads/gnu/13.3.rel1/binrel/arm-gnu-toolchain-13.3.rel1-x86_64-arm-none-eabi.tar.xz" \
+          curl -fL "https://developer.arm.com/-/media/Files/downloads/gnu/12.3.rel1/binrel/arm-gnu-toolchain-12.3.rel1-x86_64-arm-none-eabi.tar.xz" \
             -o /tmp/arm-toolchain.tar.xz
           sudo mkdir -p /opt/arm-toolchain
           sudo tar -xf /tmp/arm-toolchain.tar.xz -C /opt/arm-toolchain --strip-components=1
