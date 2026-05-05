@@ -106,9 +106,9 @@ jobs:
       # ── 8. Verify outputs ────────────────────────────────────────────────────
       - name: Verify build artefacts
         run: |
-          ls -lh build/Top/pipicube.uf2
-          ls -lh build/Top/pipicube.elf
-          arm-none-eabi-size build/Top/pipicube.elf
+          ls -lh build/bin/pico_arm_gcc/pipicube.uf2
+          ls -lh build/bin/pico_arm_gcc/pipicube.elf
+          arm-none-eabi-size build/bin/pico_arm_gcc/pipicube.elf
 
       # ── 9. Upload UF2 (every build) ──────────────────────────────────────────
       - name: Upload UF2 artefact
@@ -116,8 +116,8 @@ jobs:
         with:
           name: pipicube-firmware-${{ github.sha }}
           path: |
-            build/Top/pipicube.uf2
-            build/Top/pipicube.elf
+            build/bin/pico_arm_gcc/pipicube.uf2
+            build/bin/pico_arm_gcc/pipicube.elf
           if-no-files-found: error
           retention-days: 90
 
@@ -150,8 +150,8 @@ jobs:
             | pico-sdk | ${{ env.PICO_SDK_VERSION }} |
             | fprime | ${{ env.FPRIME_VERSION }} |
           files: |
-            build/Top/pipicube.uf2
-            build/Top/pipicube.elf
+            build/bin/pico_arm_gcc/pipicube.uf2
+            build/bin/pico_arm_gcc/pipicube.elf
           fail_on_unmatched_files: true
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
