@@ -103,14 +103,44 @@ jobs:
       - name: Build firmware
         run: cmake --build build --parallel $(nproc)
 
-      # ── 8. Verify outputs ────────────────────────────────────────────────────
+      # ── 8. Generate UF2 ──────────────────────────────────────────────────────
+      # pico_add_extra_outputs may not fire in the F' cmake deployment structure;
+      # convert explicitly using the elf2uf2 tool that pico-sdk builds.
+      - name: Generate UF2
+        run: |
+          # Locate ELF (pico-sdk may or may not append .elf suffix)
+          ELF=$(find build/bin/pico_arm_gcc -maxdepth 1 -type f \
+                  \( -name "pipicube" -o -name "pipicube.elf" \) | head -1)
+          if [ -z "$ELF" ]; then
+            echo "ERROR: ELF not found in build/bin/pico_arm_gcc/" && exit 1
+          fi
+          echo "ELF: $ELF"
+
+          # Find elf2uf2 built by pico-sdk, or build it from source
+          ELF2UF2=$(find build -name "elf2uf2" -type f 2>/dev/null | head -1)
+          if [ -z "$ELF2UF2" ]; then
+            echo "elf2uf2 not in cmake build tree; building from pico-sdk source"
+            cmake -S "$PICO_SDK_PATH/tools/elf2uf2" -B /tmp/elf2uf2-build \
+                  -DCMAKE_BUILD_TYPE=Release
+            cmake --build /tmp/elf2uf2-build
+            ELF2UF2=/tmp/elf2uf2-build/elf2uf2
+          fi
+          echo "elf2uf2: $ELF2UF2"
+
+          "$ELF2UF2" "$ELF" build/bin/pico_arm_gcc/pipicube.uf2
+          ls -lh build/bin/pico_arm_gcc/pipicube.uf2
+          # Ensure a .elf name exists for the upload step
+          [ -f build/bin/pico_arm_gcc/pipicube.elf ] || \
+              cp "$ELF" build/bin/pico_arm_gcc/pipicube.elf
+
+      # ── 9. Verify outputs ────────────────────────────────────────────────────
       - name: Verify build artefacts
         run: |
           ls -lh build/bin/pico_arm_gcc/pipicube.uf2
           ls -lh build/bin/pico_arm_gcc/pipicube.elf
           arm-none-eabi-size build/bin/pico_arm_gcc/pipicube.elf
 
-      # ── 9. Upload UF2 (every build) ──────────────────────────────────────────
+      # ── 10. Upload UF2 (every build) ─────────────────────────────────────────
       - name: Upload UF2 artefact
         uses: actions/upload-artifact@v4
         with:
@@ -121,7 +151,7 @@ jobs:
           if-no-files-found: error
           retention-days: 90
 
-      # ── 10. GitHub Release (tag builds only) ─────────────────────────────────
+      # ── 11. GitHub Release (tag builds only) ─────────────────────────────────
       - name: Create GitHub Release
         if: startsWith(github.ref, 'refs/tags/')
         uses: softprops/action-gh-release@v2
