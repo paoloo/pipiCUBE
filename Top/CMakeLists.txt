@@ -12,6 +12,6 @@ register_fprime_module(pipicube_Top
     Svc_RateGroupDriver
     Svc_CmdDispatcher
     Svc_TlmChan
-    Svc_ActiveLogger
-    Svc_Time
+    Svc_EventManager
+    Svc_OsTime
 )
