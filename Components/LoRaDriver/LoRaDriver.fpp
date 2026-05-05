@@ -72,7 +72,7 @@ module PipiCube {
 
     @ Payload pushed to dataIn exceeded LORA_PAYLOAD_MAX_BYTES and was dropped
     event PayloadTooLarge(
-      size: U32
+      payloadSize: U32
     ) severity warning high id 0x305 \
       format "LoRa payload too large: {} bytes (max 80)"
 
