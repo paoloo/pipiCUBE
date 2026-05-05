@@ -96,7 +96,7 @@ void BatteryMonitor::doPoll(void) {
 void BatteryMonitor::BATTERY_POLL_cmdHandler(const FwOpcodeType opCode,
                                               const U32          cmdSeq) {
     this->doPoll();
-    this->cmdResponse_out(0, opCode, cmdSeq, Fw::CmdResponse::OK);
+    this->cmdResponse_out(opCode, cmdSeq, Fw::CmdResponse::OK);
 }
 
 void BatteryMonitor::BATTERY_SET_LOW_THRESHOLD_cmdHandler(
@@ -104,12 +104,12 @@ void BatteryMonitor::BATTERY_SET_LOW_THRESHOLD_cmdHandler(
         const U32          cmdSeq,
         const U8           threshold) {
     if (threshold < 1U || threshold > 99U) {
-        this->cmdResponse_out(0, opCode, cmdSeq,
+        this->cmdResponse_out(opCode, cmdSeq,
                               Fw::CmdResponse::VALIDATION_ERROR);
         return;
     }
     m_lowThreshold = threshold;
-    this->cmdResponse_out(0, opCode, cmdSeq, Fw::CmdResponse::OK);
+    this->cmdResponse_out(opCode, cmdSeq, Fw::CmdResponse::OK);
 }
 
 } // namespace PipiCube

@@ -372,14 +372,14 @@ void GpsReceiver::GPS_RESET_cmdHandler(const FwOpcodeType opCode,
     hal_uart_rx_flush(HAL_UART1);
     m_lineLen       = 0U;
     m_lastFixQuality = 0U;
-    this->cmdResponse_out(0, opCode, cmdSeq, Fw::CmdResponse::OK);
+    this->cmdResponse_out(opCode, cmdSeq, Fw::CmdResponse::OK);
 }
 
 void GpsReceiver::GPS_SET_ENABLED_cmdHandler(const FwOpcodeType opCode,
                                                const U32          cmdSeq,
                                                const bool         enabled) {
     m_enabled = enabled;
-    this->cmdResponse_out(0, opCode, cmdSeq, Fw::CmdResponse::OK);
+    this->cmdResponse_out(opCode, cmdSeq, Fw::CmdResponse::OK);
 }
 
 } // namespace PipiCube

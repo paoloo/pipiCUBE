@@ -320,7 +320,7 @@ void LoRaDriver::dataIn_handler(FwIndexType portNum,
 
     // Read response with a 1-second timeout
     uint32_t resp_len = readATLine(1000000U);
-    if (resp_len == 0U || m_atBuf[0] == '+' && m_atBuf[1] == 'E') {
+    if (resp_len == 0U || (m_atBuf[0] == '+' && m_atBuf[1] == 'E')) {
         // +ERR=<n>
         U8 err_code = 0U;
         if (resp_len >= 6U) {
@@ -341,7 +341,7 @@ void LoRaDriver::LORA_SEND_AT_cmdHandler(const FwOpcodeType opCode,
                                           const U32          cmdSeq,
                                           const Fw::CmdStringArg &cmd) {
     bool ok = sendAT(cmd.toChar());
-    this->cmdResponse_out(0, opCode, cmdSeq,
+    this->cmdResponse_out(opCode, cmdSeq,
                           ok ? Fw::CmdResponse::OK
                              : Fw::CmdResponse::EXECUTION_ERROR);
 }
@@ -360,7 +360,7 @@ void LoRaDriver::LORA_SET_FREQ_cmdHandler(const FwOpcodeType opCode,
     cmd[idx] = '\0';
 
     bool ok = sendAT(cmd);
-    this->cmdResponse_out(0, opCode, cmdSeq,
+    this->cmdResponse_out(opCode, cmdSeq,
                           ok ? Fw::CmdResponse::OK
                              : Fw::CmdResponse::EXECUTION_ERROR);
 }
@@ -369,7 +369,7 @@ void LoRaDriver::LORA_SET_SF_cmdHandler(const FwOpcodeType opCode,
                                          const U32          cmdSeq,
                                          const U8           sf) {
     if (sf < 7U || sf > 12U) {
-        this->cmdResponse_out(0, opCode, cmdSeq,
+        this->cmdResponse_out(opCode, cmdSeq,
                               Fw::CmdResponse::VALIDATION_ERROR);
         return;
     }
@@ -384,7 +384,7 @@ void LoRaDriver::LORA_SET_SF_cmdHandler(const FwOpcodeType opCode,
     cmd[idx] = '\0';
 
     bool ok = sendAT(cmd);
-    this->cmdResponse_out(0, opCode, cmdSeq,
+    this->cmdResponse_out(opCode, cmdSeq,
                           ok ? Fw::CmdResponse::OK
                              : Fw::CmdResponse::EXECUTION_ERROR);
 }
@@ -393,7 +393,7 @@ void LoRaDriver::LORA_SET_POWER_cmdHandler(const FwOpcodeType opCode,
                                             const U32          cmdSeq,
                                             const U8           powerDbm) {
     if (powerDbm > 22U) {
-        this->cmdResponse_out(0, opCode, cmdSeq,
+        this->cmdResponse_out(opCode, cmdSeq,
                               Fw::CmdResponse::VALIDATION_ERROR);
         return;
     }
@@ -408,7 +408,7 @@ void LoRaDriver::LORA_SET_POWER_cmdHandler(const FwOpcodeType opCode,
     cmd[idx] = '\0';
 
     bool ok = sendAT(cmd);
-    this->cmdResponse_out(0, opCode, cmdSeq,
+    this->cmdResponse_out(opCode, cmdSeq,
                           ok ? Fw::CmdResponse::OK
                              : Fw::CmdResponse::EXECUTION_ERROR);
 }
@@ -424,7 +424,7 @@ void LoRaDriver::LORA_RESET_cmdHandler(const FwOpcodeType opCode,
         this->log_FATAL_InitFailed(static_cast<U8>(LORA_INIT_RETRIES));
     }
     this->tlmWrite_ModuleState(static_cast<U8>(m_state));
-    this->cmdResponse_out(0, opCode, cmdSeq,
+    this->cmdResponse_out(opCode, cmdSeq,
                           ok ? Fw::CmdResponse::OK
                              : Fw::CmdResponse::EXECUTION_ERROR);
 }
