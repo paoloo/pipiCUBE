@@ -54,7 +54,9 @@ add_fprime_subdirectory(Components)
 add_fprime_subdirectory(Top)
 
 register_fprime_deployment(pipicube
-  SOURCES "${CMAKE_CURRENT_LIST_DIR}/Top/main.cpp"
+  SOURCES
+    "${CMAKE_CURRENT_LIST_DIR}/Top/main.cpp"
+    "${CMAKE_CURRENT_LIST_DIR}/Os/atomic.c"
   DEPENDS
     pipicube_Top
     pipicube_hal
